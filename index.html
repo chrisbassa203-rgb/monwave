@@ -1,126 +1,494 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>MonWave - Démonstration</title>
+<title>MonWave</title>
 
 <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
 
-*{box-sizing:border-box}
+body {
+  background: #f4f7fb;
+  color: #172033;
+  min-height: 100vh;
+}
 
-body{margin:0;font-family:Arial,sans-serif;background:#f2f7f5;color:#173b30}
+.app {
+  max-width: 480px;
+  margin: auto;
+  min-height: 100vh;
+  background: #fff;
+  box-shadow: 0 0 30px rgba(0,0,0,.08);
+}
 
-header{background:#075e4b;color:white;padding:24px 20px;border-radius:0 0 25px 25px}
+header {
+  background: linear-gradient(135deg, #087fdf, #005bbb);
+  color: white;
+  padding: 28px 22px 35px;
+  border-radius: 0 0 28px 28px;
+}
 
-header h1{margin:0;font-size:27px}
+.brand {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
 
-header p{margin:8px 0 0;font-size:13px}
+.demo {
+  font-size: 11px;
+  background: rgba(255,255,255,.18);
+  padding: 5px 9px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-left: 5px;
+}
 
-main{max-width:480px;margin:auto;padding:20px}
+.balance-label {
+  opacity: .85;
+  font-size: 14px;
+}
 
-.balance{background:#087e63;color:white;padding:25px;border-radius:20px}
+.balance {
+  font-size: 36px;
+  font-weight: bold;
+  margin-top: 7px;
+}
 
-.balance p{margin:0;font-size:14px}
+.main {
+  padding: 22px;
+}
 
-.balance h2{font-size:32px;margin:15px 0}
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 28px;
+}
 
-.tag{font-size:12px;background:#d9f5e8;color:#075e4b;padding:7px 12px;border-radius:20px;display:inline-block}
+.action {
+  border: none;
+  border-radius: 18px;
+  padding: 20px 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
 
-.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.action:hover {
+  transform: translateY(-2px);
+}
 
-.action{background:white;border:0;border-radius:16px;padding:18px 5px;color:#075e4b;font-weight:bold;cursor:pointer}
+.send {
+  background: #087fdf;
+  color: white;
+}
 
-.action span{display:block;font-size:25px;margin-bottom:10px}
+.withdraw {
+  background: #eaf3ff;
+  color: #087fdf;
+}
 
-h3{font-size:18px}
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
 
-.transaction{background:white;padding:17px;border-radius:15px;margin:10px 0;display:flex;justify-content:space-between;gap:10px}
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-.transaction small{display:block;color:#777;margin-top:5px}
+.transaction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid #edf0f5;
+  border-radius: 15px;
+  background: #fff;
+}
 
-.notice{font-size:12px;color:#666;text-align:center;margin-top:25px}
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
+.icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf6ff;
+  font-size: 19px;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.date {
+  color: #8993a4;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.amount {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.empty {
+  text-align: center;
+  color: #8c96a6;
+  padding: 35px 10px;
+}
+
+footer {
+  text-align: center;
+  color: #a0a8b5;
+  font-size: 11px;
+  padding: 30px 10px;
+}
+
+/* Fenêtre */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-radius: 25px 25px 0 0;
+  padding: 25px 22px 30px;
+  animation: slideUp .25s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-title {
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #dfe5ed;
+  border-radius: 13px;
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+input:focus {
+  border-color: #087fdf;
+}
+
+.confirm {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 13px;
+  background: #087fdf;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel {
+  width: 100%;
+  margin-top: 9px;
+  padding: 13px;
+  border: none;
+  background: transparent;
+  color: #697386;
+  cursor: pointer;
+}
+
+.message {
+  margin-bottom: 12px;
+  padding: 11px;
+  border-radius: 10px;
+  background: #fff0f0;
+  color: #c62828;
+  font-size: 13px;
+  display: none;
+}
+
+@media (min-width: 600px) {
+  body {
+    padding: 25px 0;
+  }
+
+  .app {
+    border-radius: 25px;
+    overflow: hidden;
+    min-height: calc(100vh - 50px);
+  }
+
+  .modal {
+    align-items: center;
+  }
+
+  .modal-box {
+    border-radius: 25px;
+  }
+}
 </style>
-
 </head>
 
 <body>
 
+<div class="app">
+
 <header>
+  <div class="brand">
+    MonWave <span class="demo">SIMULATION</span>
+  </div>
 
-<h1>monwave</h1>
-
-<p>Votre argent, simplement.</p>
-
+  <div class="balance-label">Solde disponible</div>
+  <div class="balance" id="balance">50 000 FCFA</div>
 </header>
 
-<main>
+<main class="main">
 
-<div class="balance">
+  <div class="actions">
+    <button class="action send" onclick="openModal('send')">
+      💸 Envoyer
+    </button>
 
-<p>Solde de démonstration</p>
+    <button class="action withdraw" onclick="openModal('withdraw')">
+      🏧 Retrait
+    </button>
+  </div>
 
-<h2 id="solde">25 000 FCFA</h2>
+  <div class="section-title">Historique</div>
 
-<span class="tag">Mode démo · Argent fictif</span>
-
-</div>
-
-<div class="actions">
-
-<button class="action" onclick="demo('Envoyer')"><span>↗</span>Envoyer</button>
-
-<button class="action" onclick="demo('retrait')"><span>↙</span>Recevoir</button>
-
-<button class="action" onclick="demo('Recharger')"><span>＋</span>Recharger</button>
-
-</div>
-
-<h3>Activité récente</h3>
-
-<div class="transaction">
-
-<div>Transfert de démonstration<small>Aujourd'hui</small></div>
-
-<strong>− 2 000 F</strong>
-
-</div>
-
-<div class="transaction">
-
-<div>Recharge de démonstration<small>Hier</small></div>
-
-<strong>+ 5 000 F</strong>
-
-</div>
-
-<p class="notice">MonWave est une maquette fictive. Aucun transfert ni paiement réel n'est effectué.</p>
+  <div class="history" id="history"></div>
 
 </main>
 
+<footer>
+  MonWave est une simulation fictive — aucune transaction réelle.
+</footer>
+
+</div>
+
+<!-- Fenêtre opération -->
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-title" id="modalTitle">
+      Envoyer de l'argent
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <input
+      type="text"
+      id="phone"
+      placeholder="Numéro de téléphone"
+      inputmode="numeric"
+    >
+
+    <input
+      type="number"
+      id="amount"
+      placeholder="Montant en FCFA"
+      min="1"
+    >
+
+    <button class="confirm" onclick="confirmOperation()">
+      Confirmer
+    </button>
+
+    <button class="cancel" onclick="closeModal()">
+      Annuler
+    </button>
+
+  </div>
+
+</div>
+
 <script>
 
-function demo(action){
-  if(action.toLowerCase().includes("envoyer")){
-    let numero = prompt("Entre le numéro du destinataire :");
-    if(!numero) return;
-    let montant = prompt("Entre le montant fictif à envoyer en FCFA :");
-    if(!montant || isNaN(montant) || Number(montant) <= 0){
-      alert("Montant invalide.");
-      return;
-    }
-    alert("Simulation réussie !\nDestinataire : " + numero + "\nMontant : " + montant + " FCFA\nAucun argent réel n'a été transféré.");
+let balance = Number(localStorage.getItem("monwave_balance")) || 50000;
+
+let history =
+  JSON.parse(localStorage.getItem("monwave_history")) || [];
+
+let operationType = "send";
+
+function formatMoney(number) {
+  return Number(number).toLocaleString("fr-FR") + " FCFA";
+}
+
+function updateBalance() {
+  document.getElementById("balance").textContent =
+    formatMoney(balance);
+
+  localStorage.setItem("monwave_balance", balance);
+}
+
+function openModal(type) {
+
+  operationType = type;
+
+  document.getElementById("modal").style.display = "flex";
+
+  document.getElementById("phone").value = "";
+  document.getElementById("amount").value = "";
+  document.getElementById("message").style.display = "none";
+
+  if (type === "send") {
+    document.getElementById("modalTitle").textContent =
+      "Envoyer de l'argent";
   } else {
-    alert(action + " : cette fonction est encore en démonstration.");
+    document.getElementById("modalTitle").textContent =
+      "Effectuer un retrait";
   }
-}</script>
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+function showMessage(text) {
+  const box = document.getElementById("message");
+
+  box.textContent = text;
+  box.style.display = "block";
+}
+
+function confirmOperation() {
+
+  const phone = document.getElementById("phone").value.trim();
+  const amount = Number(document.getElementById("amount").value);
+
+  if (!phone) {
+    showMessage("Entre un numéro de téléphone.");
+    return;
+  }
+
+  if (!amount || amount <= 0) {
+    showMessage("Entre un montant valide.");
+    return;
+  }
+
+  if (amount > balance) {
+    showMessage("Solde insuffisant.");
+    return;
+  }
+
+  balance -= amount;
+
+  const transaction = {
+    type: operationType,
+    phone: phone,
+    amount: amount,
+    date: new Date().toLocaleString("fr-FR")
+  };
+
+  history.unshift(transaction);
+
+  localStorage.setItem(
+    "monwave_history",
+    JSON.stringify(history)
+  );
+
+  updateBalance();
+  renderHistory();
+  closeModal();
+}
+
+function renderHistory() {
+
+  const container = document.getElementById("history");
+
+  container.innerHTML = "";
+
+  if (history.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Aucune opération pour le moment.
+      </div>
+    `;
+
+    return;
+  }
+
+  history.forEach(transaction => {
+
+    const div = document.createElement("div");
+
+    div.className = "transaction";
+
+    const title =
+      transaction.type === "send"
+      ? "Envoi"
+      : "Retrait";
+
+    const icon =
+      transaction.type === "send"
+      ? "↗️"
+      : "🏧";
+
+    div.innerHTML = `
+      <div class="left">
+        <div class="icon">${icon}</div>
+
+        <div>
+          <div class="name">
+            ${title}
+          </div>
+
+          <div class="date">
+            ${transaction.phone}<br>
+            ${transaction.date}
+          </div>
+        </div>
+      </div>
+
+      <div class="amount">
+        -${formatMoney(transaction.amount)}
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+updateBalance();
+renderHistory();
+
+</script>
 
 </body>
-
 </html>
