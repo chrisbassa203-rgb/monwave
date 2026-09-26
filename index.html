@@ -107,12 +107,19 @@ h3{font-size:18px}
 <script>
 
 function demo(action){
-
-alert(action+" : cette fonction est uniquement une démonstration. Aucun argent réel n'est transféré.");
-
-}
-
-</script>
+  if(action.toLowerCase().includes("envoyer")){
+    let numero = prompt("Entre le numéro du destinataire :");
+    if(!numero) return;
+    let montant = prompt("Entre le montant fictif à envoyer en FCFA :");
+    if(!montant || isNaN(montant) || Number(montant) <= 0){
+      alert("Montant invalide.");
+      return;
+    }
+    alert("Simulation réussie !\nDestinataire : " + numero + "\nMontant : " + montant + " FCFA\nAucun argent réel n'a été transféré.");
+  } else {
+    alert(action + " : cette fonction est encore en démonstration.");
+  }
+}</script>
 
 </body>
 
