@@ -261,6 +261,19 @@ input:focus {
 }
 </style>
 </head>
+  <div class="modal" id="qrModal">
+  <div class="modal-box" style="text-align:center;">
+    <div class="modal-title">Mon QR MonWave</div>
+
+    <div id="qrcode" style="display:flex;justify-content:center;margin:20px 0;"></div>
+
+    <div style="font-size:13px;color:#8993a4;margin-bottom:18px;">
+      Profil fictif MonWave
+    </div>
+
+    <button class="cancel" onclick="closeQR()">Fermer</button>
+  </div>
+</div>
 
 <body>
 
@@ -424,6 +437,9 @@ function confirmOperation() {
   );
 
   updateBalance();
+  function openQR() {
+    alert("QR code MonWave");
+    }
   renderHistory();
   closeModal();
 }
